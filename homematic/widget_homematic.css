@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+
+.rtr_homematic .actual {
+	padding: 5px 0 5px 5px;
+	width: 200px;
+	margin: auto;
+}
+
+.rtr_homematic .actual .temp {
+	margin: 5px 0 5px 0;
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+.rtr_homematic .set {
+	padding: 5px 15px 5px 15px;
+	width: 173px;
+	height: 48px;
+	margin: auto;
+}
+
+.rtr_homematic .set .temp {
+	width: 80px;
+	height: 48px;
+	padding-top: 10px;
+	float: left;
+}
+
+.rtr_homematic .set .ui-btn {
+	float: left;
+}
+
+.rtr_homematic .control {
+	padding: 5px 0 5px 0;
+	height: 48px;
+	margin: auto;
+}
+
+.rtr_homematic .control .switch {
+	margin: 2px;
+}

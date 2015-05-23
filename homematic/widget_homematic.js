@@ -14,7 +14,7 @@ function deviceHmTc_setDelayed(uid, item, val) {
     obj.prop("setDelayTimer", setTimeout(function(){ 
                                            io.write(item, val);
                                            $('#' + uid).removeProp("setDelayTimer");
-                                         }, 3000));
+                                         }, 1500));
                                          
 }
 
@@ -23,9 +23,13 @@ $(document).delegate('div[data-widget="device.hmtc"] > div > a[data-icon="minus"
         var uid = $(this).parent().parent().attr('id');
         var step = $('#' + uid).attr('data-step');
         var item = $('#' + uid + 'set').attr('data-item');
+		var val = widget.get(item);
 
-        var temp = (Math.round((widget.get(item) - step) * 10) / 10).toFixed(1);
-        temp = Math.max($('#' + uid).attr('min_temp'), temp);
+		var temp = 17.0;
+		if ($.isNumeric(val)) {
+			temp = (Math.round((val - step) * 10) / 10).toFixed(1);
+			temp = Math.max($('#' + uid).attr('min_temp'), temp);
+		}  
         deviceHmTc_setDelayed(uid, item, temp);
     }
 });
@@ -35,9 +39,13 @@ $(document).delegate('div[data-widget="device.hmtc"] > div > a[data-icon="plus"]
         var uid = $(this).parent().parent().attr('id');
         var step = $('#' + uid).attr('data-step');
         var item = $('#' + uid + 'set').attr('data-item');
-
-        var temp = (Math.round((widget.get(item) * 1 + step * 1) * 10) / 10).toFixed(1);
-        temp = Math.min($('#' + uid).attr('max_temp'), temp);
+		var val = widget.get(item);
+		
+		var temp = 17.0;
+		if ($.isNumeric(val)) {
+			temp = (Math.round((widget.get(item) * 1 + step * 1) * 10) / 10).toFixed(1);
+			temp = Math.min($('#' + uid).attr('max_temp'), temp);
+		}
         deviceHmTc_setDelayed(uid, item, temp);
     }
 });
