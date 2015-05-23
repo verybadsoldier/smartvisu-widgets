@@ -23,3 +23,20 @@ $(document).delegate('select[data-widget="basic_extra.flip"]', {
 		io.write($(this).attr('data-item'), ($(this).val() == 'on' ? $(this).attr('data-value-on') : $(this).attr('data-value-off')));
 	}
 });
+
+$(document).delegate('[data-widget="basic_extra.float"]', {
+	'update': function (event, response) {
+		val = parseFloat(response);
+		if (!isNaN(val)) {
+			if ($(this).attr('data-unit') != '') {
+				$('#' + this.id).html(parseFloat(response).transUnit($(this).attr('data-unit')));
+			}
+			else {
+				$('#' + this.id).html(parseFloat(response).transFloat());
+			}
+		}
+		else {
+			$('#' + this.id).html(response);
+		}
+	}
+});

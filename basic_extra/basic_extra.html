@@ -46,3 +46,20 @@
         </div>
     </div>
 {% endmacro %}
+
+
+/**
+* Displays a value as float
+* like basic.float but will also display non-numeric values
+* 
+* @param unique id for this widget
+* @param a gad/item
+* @param a unit, tries to get the format for that unit from the language-file (optional)
+* @param the parent html-tag for the value (optional, default 'span')
+*/
+{% macro float(id, gad, unit, tag) %}
+
+	<{{ tag|default('span') }} id="{{ uid(page, id) }}" data-widget="basic_extra.float" data-item="{{ gad }}"
+	data-unit="{{ unit }}">-.- {{ unit }}</{{ tag|default('span') }}>
+
+{% endmacro %}
