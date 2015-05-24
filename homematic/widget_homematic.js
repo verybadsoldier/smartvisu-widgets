@@ -49,3 +49,49 @@ $(document).delegate('div[data-widget="device.hmtc"] > div > a[data-icon="plus"]
         deviceHmTc_setDelayed(uid, item, temp);
     }
 });
+
+
+// ----- homematic.silder ---------------------------------------------------------
+// The slider had to be handled in a more complex manner. A 'lock' is used
+// to stop the change after a refresh. And a timer is used to fire the trigger
+// only every 400ms if it was been moved. There should be no trigger on init.
+$(document).delegate('input[data-widget="homematic.slider"]', {
+	'update': function (event, response) {
+		// DEBUG: console.log("[homematic.slider] update '" + this.id + "': " + response + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
+		$(this).attr('lock', 1);
+		$('#' + this.id).val(response).slider('refresh').attr('mem', $(this).val());
+
+		//delete class: lets assume this update was triggered by server ACK
+		$(this).parent().find("div.ui-slider-bg").removeClass("basic_extra_slider_value_pending");
+	},
+
+	'slidestop': function (event) {
+		if ($(this).val() != $(this).attr('mem')) {
+			io.write($(this).attr('data-item'), $(this).val());
+		}
+	},
+
+	'change': function (event) {
+		// DEBUG: console.log("[homematic.slider] change '" + this.id + "': " + $(this).val() + " timer: " + $(this).attr('timer') + " lock: " + $(this).attr('lock'));   
+		if (( $(this).attr('timer') === undefined || $(this).attr('timer') == 0 && $(this).attr('lock') == 0 )
+			&& ($(this).val() != $(this).attr('mem'))) {
+
+			if ($(this).attr('timer') !== undefined) {
+				$(this).trigger('click');
+			}
+
+			$(this).attr('timer', 1);
+			setTimeout("$('#" + this.id + "').attr('timer', 0);", 400);
+		}
+
+		$(this).attr('lock', 0);
+	},
+
+	'click': function (event) {
+		// $('#' + this.id).attr('mem', $(this).val());		
+		io.write($(this).attr('data-item'), $(this).val());
+		
+		//add a css class to alter appearance until ACK arrives
+		$(this).parent().find("div.ui-slider-bg").addClass("basic_extra_slider_value_pending");
+	}
+});

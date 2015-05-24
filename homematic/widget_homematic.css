@@ -39,3 +39,7 @@
 .rtr_homematic .control .switch {
 	margin: 2px;
 }
+
+.basic_extra_slider_value_pending {
+	border-color: #FF0000;
+}

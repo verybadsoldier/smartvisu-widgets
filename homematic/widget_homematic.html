@@ -72,10 +72,11 @@
 */
 {% macro dimmer(id, txt, gad_switch, gad_value, min, max, step) %}
 	{% import "basic.html" as basic %}
+	{% import "homematic/widget_homematic.html" as homematic %}
 	<div class="dimmer">
 		{{ basic.switch(id~'switch', gad_switch, icon1~'light_light.png', icon0~'light_light.png') }}
 		<p>{{ txt|e }}</p>
-		{{ basic.slider(id~'slider', gad_value, min, max, step) }}
+		{{ homematic.slider(id~'slider', gad_value, min, max, step) }}
 	</div>
 {% endmacro %}
 
@@ -255,5 +256,28 @@
 			</tr>
 		</table>
 	</div>
+
+{% endmacro %}
+
+
+/**
+* Displays a slider-control
+* like basic.slider but adds a css class for pending values (before ACK from server arrives)
+*
+* @param unique id for this widget
+* @param a gad/item
+* @param the minimum value if the slider is moved to total left (optional, default 0)
+* @param the maximum value if the slider is moved to total right (optional, default 255)
+* @param step between two values (optional, default 5)
+* @param the orientation ('none', 'vertical', 'bottomup', 'semicircle')
+*/
+{% macro slider(id, gad, min, max, step, mode) %}
+    {% if once('homematic.slider') %}
+    <link rel="stylesheet" href="{{user_directory}}/homematic/widgets_homematic.css" type="text/css">
+	{% endif %}
+	
+	<input id="{{ uid(page, id) }}" data-widget="homematic.slider" data-item="{{ gad }}"
+		type="range" value="0" min="{{ min|default(0) }}" max="{{ max|default(255) }}" step="{{ step|default(5) }}"
+		orientation="{{ mode }}" data-highlight="true" />
 
 {% endmacro %}
