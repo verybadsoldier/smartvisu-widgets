@@ -273,7 +273,7 @@
 */
 {% macro slider(id, gad, min, max, step, mode) %}
     {% if once('homematic.slider') %}
-    <link rel="stylesheet" href="{{user_directory}}/homematic/widgets_homematic.css" type="text/css">
+    <link rel="stylesheet" href="{{user_directory}}/homematic/widget_homematic.css" type="text/css">
 	{% endif %}
 	
 	<input id="{{ uid(page, id) }}" data-widget="homematic.slider" data-item="{{ gad }}"
